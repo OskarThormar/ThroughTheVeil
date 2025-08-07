@@ -4,7 +4,7 @@ import db from '../database/connection.js';
 
 const router = Router();
 
-router.get('/api/items/shield', async (req, res) => {
+router.get('/items/shields', async (req, res) => {
     try {
         const shieldItems = await db.all('SELECT * FROM items WHERE type = ?;', 'Shield');
         res.json(shieldItems);

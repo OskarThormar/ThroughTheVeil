@@ -4,15 +4,13 @@ import db from '../database/connection.js'; // Directly import the database inst
 
 const router = Router(); // Create the router instance
 
-// API Endpoint: Get all classes
-router.get('/', async (req, res) => { // This will be accessible at /classes
+router.get('/classes', async (req, res) => {
     try {
-        const sql = `SELECT * FROM classes;`;
-        const classes = await db.all(sql);
-        res.json(classes);
+        const sql = await db.all('SELECT * FROM classes');
+        res.json(sql);
     } catch (err) {
-        console.error('Error fetching classes:', err.message);
-        res.status(500).json({ error: 'Failed to retrieve classes' });
+        console.error("Error fetching classes:", err);
+        res.status(500).json({ error: err.message });
     }
 });
 

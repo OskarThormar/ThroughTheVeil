@@ -1,0 +1,191 @@
+// database/seeding/items/materials/skinning/insertApprenticeSkins.js
+// This script inserts Apprentice-level skinning produce into the 'profession_materials' table.
+
+import db from '../../../../../../connection.js'; // Correct path to connection.js
+
+export default async function seedApprenticeSkins() {
+    console.log('Seeding Apprentice Skinning');
+
+    const skins = [
+        { name: 'Boar Leather', 
+            rarity: 'Apprentice', 
+            type: 'Skinnings', 
+            subtype: 'Boar', 
+            weight: 1, 
+            armor_flat_bonus: 24, 
+            physical_resistance_bonus: 1, 
+            magic_resistance_bonus: 1, 
+            dodge_chance_bonus: 2, 
+            aura_value_bonus: 1.5,  
+        },
+
+        { name: 'Deer Leather', 
+            rarity: 'Apprentice', 
+            type: 'Skinnings', 
+            subtype: 'Deer',  
+            weight: 1, 
+            armor_flat_bonus: 24, 
+            physical_resistance_bonus: 1, 
+            magic_resistance_bonus: 1, 
+            dodge_chance_bonus: 2, 
+            aura_value_bonus: 1.5, 
+            },
+
+        { name: 'Elk Leather', 
+            rarity: 'Apprentice', 
+            type: 'Skinnings', 
+            subtype: 'Elk', 
+            weight: 1, 
+            armor_flat_bonus: 24, 
+            physical_resistance_bonus: 1, 
+            magic_resistance_bonus: 1, 
+            dodge_chance_bonus: 2, 
+            aura_value_bonus: 1.5, 
+        },
+        { name: 'Ox Leather', 
+            rarity: 'Apprentice', 
+            type: 'Skinnings', 
+            subtype: 'Ox', 
+            weight: 1, 
+            armor_flat_bonus: 24, 
+            physical_resistance_bonus: 1, 
+            magic_resistance_bonus: 1, 
+            dodge_chance_bonus: 2, 
+            aura_value_bonus: 1.5,
+        },
+        { name: 'Basilisk Scales', 
+            rarity: 'Apprentice', 
+            type: 'Skinnings', 
+            subtype: 'Basilisk', 
+            weight: 2, 
+            armor_flat_bonus: 48, 
+            physical_resistance_bonus: 2, 
+            magic_resistance_bonus: 4, 
+            dodge_chance_bonus: 1, 
+            aura_value_bonus: 1,
+        },
+
+        { name: 'Blue Dragon Scales', 
+            rarity: 'Apprentice', 
+            type: 'Skinnings', 
+            subtype: 'Dragon', 
+            weight: 2, 
+            armor_flat_bonus: 48, 
+            physical_resistance_bonus: 2, 
+            magic_resistance_bonus: 6, 
+            dodge_chance_bonus: 1, 
+            aura_value_bonus: 2,
+        },
+
+        { name: 'Black Dragon Scales', 
+            rarity: 'Apprentice', 
+            type: 'Skinnings', 
+            subtype: 'Dragon', 
+            weight: 2, 
+            armor_flat_bonus: 48,  
+            physical_resistance_bonus: 3, 
+            magic_resistance_bonus: 6, 
+            dodge_chance_bonus: 1, 
+            aura_value_bonus: 1,
+        },
+
+        { name: 'Green Dragon Scales', 
+            rarity: 'Apprentice', 
+            type: 'Skinnings', 
+            subtype: 'Dragon', 
+            weight: 2, 
+            armor_flat_bonus: 48, 
+            physical_resistance_bonus: 2, 
+            magic_resistance_bonus: 6, 
+            dodge_chance_bonus: 1.5, 
+            aura_value_bonus: 1,
+        },
+
+        { name: 'Red Dragon Scales', 
+            rarity: 'Apprentice', 
+            type: 'Skinnings', 
+            subtype: 'Dragon', 
+            weight: 2, 
+            armor_flat_bonus: 48, 
+            physical_resistance_bonus: 2, 
+            magic_resistance_bonus: 6, 
+            dodge_chance_bonus: 1, 
+            aura_value_bonus: 1,
+        },
+
+        { name: 'White Dragon Scales', 
+            rarity: 'Apprentice', 
+            type: 'Skinnings', 
+            subtype: 'Dragon', 
+            weight: 2, 
+            armor_flat_bonus: 24, 
+            armor_percent_bonus: 1, 
+            physical_resistance_bonus: 2, 
+            magic_resistance_bonus: 0, 
+            dodge_chance_bonus: 1.5, 
+            aura_value_bonus: 1.5,
+        },
+
+        { name: 'Wyvern Scales', 
+            rarity: 'Apprentice', 
+            type: 'Skinnings', 
+            subtype: 'Dragon', 
+            weight: 2, 
+            armor_flat_bonus: 36, 
+            physical_resistance_bonus: 1, 
+            magic_resistance_bonus: 2, 
+            dodge_chance_bonus: 1.5, 
+            aura_value_bonus: 1.5,
+
+        },
+        
+        { name: 'Bear Fur', rarity: 'Apprentice', type: 'Skinnings', subtype: 'Bear', endurance_bonus: 6 },
+        { name: 'Wolf Fur', rarity: 'Apprentice', type: 'Skinnings', subtype: 'Wolf', endurance_bonus: 6 },
+        { name: 'Panther Fur', rarity: 'Apprentice', type: 'Skinnings', subtype: 'Panter', endurance_bonus: 6 },
+        { name: 'Lynx Fur', rarity: 'Apprentice', type: 'Skinnings', subtype: 'Lynx', endurance_bonus: 6 },
+        { name: 'Tiger Fur', rarity: 'Apprentice', type: 'Skinnings', subtype: 'Tiger', endurance_bonus: 6 },
+        { name: 'Lion Fur', rarity: 'Apprentice', type: 'Skinnings', subtype: 'Lion', endurance_bonus: 6 },
+        { name: 'Wooly Rhino Fur', rarity: 'Apprentice', type: 'Skinnings', subtype: 'Rhino', endurance_bonus: 6 },
+    ];
+
+    try {
+        for (const skin of skins) {
+            await db.run(
+                `INSERT OR IGNORE INTO profession_materials (
+                    name, description, rarity, type, subtype, weight,
+                    strength_bonus, stamina_bonus, endurance_bonus, conditioning_bonus,
+                    agility_bonus, dexterity_bonus, celerity_bonus, grace_bonus,
+                    intelligence_bonus, acuity_bonus, alacrity_bonus, clarity_bonus,
+                    essence_bonus, spirit_bonus, aura_bonus, toughness_bonus,
+                    strength_percent_bonus, agility_percent_bonus, intelligence_percent_bonus,
+                    armor_flat_bonus, armor_percent_bonus, magic_resistance_bonus,
+                    physical_resistance_bonus, dps_bonus, dps_percent_bonus,
+                    attack_speed_bonus, attack_speed_percent_bonus, crit_chance_bonus,
+                    crit_damage_bonus, block_chance_bonus, block_value_bonus, dodge_chance_bonus,
+                    parry_chance_bonus, parry_value_bonus, deflection_chance_bonus,
+                    deflection_value_bonus, aura_value_bonus,
+                    active_effect_text, lore_text
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`,
+                [
+                    skin.name, skin.description, skin.rarity, skin.type, skin.subtype, skin.weight, 
+                    skin.strength_bonus || 0, skin.stamina_bonus || 0, skin.endurance_bonus || 0, skin.conditioning_bonus || 0,
+                    skin.agility_bonus || 0, skin.dexterity_bonus || 0, skin.celerity_bonus || 0, skin.grace_bonus || 0,
+                    skin.intelligence_bonus || 0, skin.acuity_bonus || 0, skin.alacrity_bonus || 0, skin.clarity_bonus || 0,
+                    skin.essence_bonus || 0, skin.spirit_bonus || 0, skin.aura_bonus || 0, skin.toughness_bonus || 0,
+                    skin.strength_percent_bonus || 0.0, skin.agility_percent_bonus || 0.0, skin.intelligence_percent_bonus || 0.0,
+                    skin.armor_flat_bonus || 0, skin.armor_percent_bonus || 0.0, skin.magic_resistance_bonus || 0,
+                    skin.physical_resistance_bonus || 0, skin.dps_bonus || 0.0, skin.dps_percent_bonus || 0.0,
+                    skin.attack_speed_bonus || 0.0, skin.attack_speed_percent_bonus || 0.0, skin.crit_chance_bonus || 0.0,
+                    skin.crit_damage_bonus || 0.0, skin.block_chance_bonus || 0.0, skin.block_value_bonus || 0,
+                    skin.dodge_chance_bonus || 0.0, skin.parry_chance_bonus || 0.0, skin.parry_value_bonus || 0,
+                    skin.deflection_chance_bonus || 0.0, skin.deflection_value_bonus || 0, skin.aura_value_bonus || 0,
+                    skin.active_effect_text || null, skin.lore_text || null
+                ]
+            );
+        }
+        console.log('Success'); // Updated console log
+    } catch (err) {
+        console.error('Error: ', err.message); // Updated console log
+        throw err;
+    }
+}
