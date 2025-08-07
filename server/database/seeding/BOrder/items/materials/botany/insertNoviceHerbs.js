@@ -1,14 +1,9 @@
-// database/seeding/items/materials/herbalism/insertNoviceHerbs.js
-// This script inserts Novice-level botanical ingredients into the 'profession_materials' table.
-
-import db from '../../../../../connection.js'; // Correct path to connection.js
+import db from '../../../../../connection.js';
 
 export default async function seedNoviceHerbs() {
     console.log('Seeding Novice botanical ingredients...');
 
     const herbs = [
-        // --- NOVICE (Sum 3, Max 1 Kind) ---
-        // 17 unique types (15 psychic alignments + Toughness + Armor_flat_bonus)
         { name: 'Sunpetal', description: 'Found in sun-drenched meadows.', rarity: 'Novice', type: 'Botanical ingredient', strength_bonus: 3 },
         { name: 'Deeproot', description: 'Found in damp, shaded forest floors.', rarity: 'Novice', type: 'Botanical ingredient', stamina_bonus: 3 },
         { name: 'Cragbloom', description: 'Clinging to rocky outcrops.', rarity: 'Novice', type: 'Botanical ingredient', endurance_bonus: 3 },
@@ -27,7 +22,6 @@ export default async function seedNoviceHerbs() {
         { name: 'Bogroot', description: 'Embedded deep within stagnant bogs.', rarity: 'Novice', type: 'Botanical ingredient', toughness_bonus: 3 },
         { name: 'Ironbark', description: 'From a common forest tree.', rarity: 'Novice', type: 'Botanical ingredient', armor_flat_bonus: 3 },
 
-        // --- NOVICE CATALYSTS (6% to 1 Archetype) ---
         { name: 'Sunfire Catalyst', description: 'Found in common forest soil.', rarity: 'Novice', type: 'Botanical ingredient (Catalyst)', strength_percent_bonus: 6 },
         { name: 'Windswift Catalyst', description: 'Found in open fields.', rarity: 'Novice', type: 'Botanical ingredient (Catalyst)', agility_percent_bonus: 6 },
         { name: 'Starglow Catalyst', description: 'Floats in the air of damp caves.', rarity: 'Novice', type: 'Botanical ingredient (Catalyst)', intelligence_percent_bonus: 6 },
@@ -57,7 +51,7 @@ export default async function seedNoviceHerbs() {
                 herb.intelligence_bonus || 0, herb.acuity_bonus || 0, herb.alacrity_bonus || 0, herb.clarity_bonus || 0,
                 herb.essence_bonus || 0, herb.spirit_bonus || 0, herb.aura_bonus || 0, herb.toughness_bonus || 0,
                 herb.strength_percent_bonus || 0.0, herb.agility_percent_bonus || 0.0, herb.intelligence_percent_bonus || 0.0,
-                herb.armor_flat_bonus || 0, 0.0, 0, // armor_percent_bonus, magic_resistance_bonus
+                herb.armor_flat_bonus || 0, 0.0, 0,
                 0, 0.0, 0.0, // physical_resistance_bonus, dps_bonus, dps_percent_bonus
                 0.0, 0.0, 0.0, // speed_bonus, speed_percent_bonus, crit_chance_bonus
                 0.0, 0, 0.0, // block_chance_bonus, block_value_bonus, dodge_chance_bonus

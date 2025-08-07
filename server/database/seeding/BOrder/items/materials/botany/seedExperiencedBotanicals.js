@@ -1,12 +1,9 @@
-// database/seeding/items/materials/botany/insertExpertBotanicals.js
-import db from '../../../../../connection.js'; // Correct path to connection.js
+import db from '../../../../../connection.js'; 
 
 export default async function seedExperiencedBotanicals() {
-    console.log('Seeding Experienced botanicals'); // Updated console log
+    console.log('Seeding Experienced botanicals'); 
 
-    const botanicals = [ // Renamed 'herbs' to 'botanicals'
-        // --- EXPERIENCED (Sum 9, Max 1 Kind) ---
-        // 17 unique types
+    const botanicals = [ 
         { name: 'Gritbloom', description: 'Found in ancient, untouched forests.', rarity: 'Experienced', type: 'Botanical', subtype: 'Flower', strength_bonus: 9 },
         { name: 'Deepstone Root', description: 'Found deep beneath ancient ruins.', rarity: 'Experienced', type: 'Botanical', subtype: 'Root', stamina_bonus: 9 },
         { name: 'Cragheart', description: 'Growing directly out of solid rock faces.', rarity: 'Experienced', type: 'Botanical', subtype: 'Stalk', endurance_bonus: 9 },
@@ -25,14 +22,13 @@ export default async function seedExperiencedBotanicals() {
         { name: 'Mirehide Root', description: 'Embedded deep within stagnant bogs.', rarity: 'Experienced', type: 'Botanical', subtype: 'Root', toughness_bonus: 9 },
         { name: 'Stoneguard Bark', description: 'From a common forest tree.', rarity: 'Experienced', type: 'Botanical', subtype: 'Bark', armor_flat_bonus: 9 },
 
-        // --- EXPERIENCED CATALYSTS (18% to 1 Archetype) ---
         { name: 'Tyrs Hair', description: 'Found near forgotten runestones.', rarity: 'Experienced', type: 'Botanical', subtype: 'Catalyst', strength_percent_bonus: 18 },
         { name: 'Ethereal Bloom', description: 'Found in areas of powerful, lingering magic.', rarity: 'Experienced', type: 'Botanical', subtype: 'Catalyst', agility_percent_bonus: 18 },
         { name: 'Deepmind Fungus', description: 'Found in deep, untouched caves.', rarity: 'Experienced', type: 'Botanical', subtype: 'Catalyst', intelligence_percent_bonus: 18 },
     ];
 
-    try { // Added try block
-        for (const botanical of botanicals) { // Renamed 'herb' to 'botanical'
+    try { 
+        for (const botanical of botanicals) { 
             await db.run(
                 `INSERT OR IGNORE INTO profession_materials (
                     name, description, rarity, type, subtype, weight,
@@ -66,9 +62,9 @@ export default async function seedExperiencedBotanicals() {
                 ]
             );
         }
-        console.log('Sucecss.'); // Updated console log
-    } catch (err) { // Added catch block
-        console.error('Error during Experienced botanical seeding:', err.message); // Updated console log
+        console.log('Sucecss.'); 
+    } catch (err) {
+        console.error('Error during Experienced botanical seeding:', err.message);
         throw err;
     }
 }

@@ -1,8 +1,8 @@
 // classesRoutes.js
 import { Router } from 'express';
-import db from '../database/connection.js'; // Directly import the database instance
+import db from '../database/connection.js'; 
 
-const router = Router(); // Create the router instance
+const router = Router(); 
 
 router.get('/classes', async (req, res) => {
     try {
@@ -14,8 +14,7 @@ router.get('/classes', async (req, res) => {
     }
 });
 
-// API Endpoint: Get abilities for a specific class
-router.get('/:classId/abilities', async (req, res) => { // This will be accessible at /classes/:classId/abilities
+router.get('/:classId/abilities', async (req, res) => { 
     const classId = req.params.classId;
     try {
         const sql = `SELECT * FROM class_abilities WHERE class_id = ?;`;
@@ -30,4 +29,4 @@ router.get('/:classId/abilities', async (req, res) => { // This will be accessib
     }
 });
 
-export default router; // Export the router directly
+export default router; 

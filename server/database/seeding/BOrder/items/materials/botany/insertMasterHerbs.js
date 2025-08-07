@@ -1,13 +1,9 @@
-// database/seeding/items/materials/herbalism/insertMasterHerbs.js
-// This script inserts Master-level botanical ingredients into the 'profession_materials' table.
-
-import db from '../../../../../connection.js'; // Correct path to connection.js
+import db from '../../../../../connection.js';
 
 export default async function seedMasterHerbs() {
     console.log('Seeding Master botanical ingredients...');
 
     const herbs = [
-        // --- MASTER (Sum 15, Max 1 Kind) ---
         { name: 'Leyline Bloom', description: 'Found in ancient, untouched forests where ley lines converge.', rarity: 'Master', type: 'Botanical ingredient', strength_bonus: 15 },
         { name: 'Aether Core', description: 'Found where the veil between worlds is thinnest.', rarity: 'Master', type: 'Botanical ingredient', stamina_bonus: 15 },
         { name: 'Titan Petal', description: 'Growing in ancient, primordial lands where titans once roamed.', rarity: 'Master', type: 'Botanical ingredient', endurance_bonus: 15 },
@@ -26,7 +22,6 @@ export default async function seedMasterHerbs() {
         { name: 'Ironhide Root', description: 'Burrows deep into the soil of storm-ravaged coastlines.', rarity: 'Master', type: 'Botanical ingredient', toughness_bonus: 15 },
         { name: 'Primal Bark', description: 'From ancient trees found near forgotten runestones or sites of primal magic.', rarity: 'Master', type: 'Botanical ingredient', armor_flat_bonus: 15 },
 
-        // --- MASTER CATALYSTS (30% to 1 or 2 Archetypes) ---
         { name: 'Worldheart Catalyst', description: 'Found only in the most pristine and untouched primordial lands.', rarity: 'Master', type: 'Botanical ingredient (Catalyst)', strength_percent_bonus: 30 },
         { name: 'Skydance Catalyst', description: 'Grows on bushes found only on the highest, most exposed mountain ridges.', rarity: 'Master', type: 'Botanical ingredient (Catalyst)', agility_percent_bonus: 30 },
         { name: 'Cosmicmind Catalyst', description: 'Blooms only at the exact convergence point of multiple powerful ley lines.', rarity: 'Master', type: 'Botanical ingredient (Catalyst)', intelligence_percent_bonus: 30 },
@@ -34,7 +29,6 @@ export default async function seedMasterHerbs() {
         { name: 'Earthsong Catalyst', description: 'Found deep within forgotten caves or where elemental spirits converge.', rarity: 'Master', type: 'Botanical ingredient (Catalyst)', strength_percent_bonus: 30, intelligence_percent_bonus: 30 },
         { name: 'Soulfire Catalyst', description: 'Grows in places of strong magical confluence or where powerful beings have rested.', rarity: 'Master', type: 'Botanical ingredient (Catalyst)', agility_percent_bonus: 30, intelligence_percent_bonus: 30 },
 
-        // --- Special Master botanical ingredient
         { name: 'White Lotus', description: 'unknown', rarity: 'Master', type: 'Botanical ingredient', lore_text: 'Makes elixirs persist through death'}
     ];
 

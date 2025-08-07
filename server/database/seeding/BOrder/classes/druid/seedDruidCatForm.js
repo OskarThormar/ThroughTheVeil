@@ -8,7 +8,6 @@ export default async function seedDruidCatForm() {
     try {
         console.log("Seeding Druid Cat Form abilities with final schema...");
 
-        // --- 1. Get necessary IDs from the database ---
         const druidId = (await db.get("SELECT id FROM classes WHERE name = 'Druid'")).id;
         const catFormStateId = (await db.get(`SELECT id FROM states WHERE name = 'Cat Form'`)).id;
         const stealthStateId = (await db.get(`SELECT id FROM states WHERE name = 'Stealth'`)).id;
@@ -17,9 +16,6 @@ export default async function seedDruidCatForm() {
         const agilityStatId = (await db.get("SELECT id FROM stats WHERE name = 'Agility'")).id;
         const strengthStatId = (await db.get("SELECT id FROM stats WHERE name = 'Strength'")).id;
 
-
-        // --- 2. Create Abilities ---
-        // Removed global_cooldown_id to align with our new design
         await db.run(`
             INSERT OR IGNORE INTO abilities (class_id, name, description, ability_type, cooldown, school, resource_id, resource_cost)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?);
@@ -32,8 +28,7 @@ export default async function seedDruidCatForm() {
         `, [druidId, 'Stealth', 'Crouch low and become undetectable to enemies. Requires Cat Form.', 'Utility', 60.0, 'Physical', energyId, 25]);
         const stealthAbilityId = (await db.get(`SELECT id FROM abilities WHERE name = 'Stealth'`)).id;
 
-        // --- 3. Create Ability Effects ---
-        // Effect to apply the Cat Form state - CORRECTLY uses applied_state_id
+        // Effect to apply the Cat Form state
         await db.run(`
             INSERT OR IGNORE INTO ability_effects (name, description, effect_type, applied_state_id, duration)
             VALUES (?, ?, ?, ?, ?);
@@ -54,14 +49,13 @@ export default async function seedDruidCatForm() {
         `, ['Cat Form Agility Bonus', 'Provides a flat and per-level bonus to Agility while in Cat Form.', 'stat_bonus_agility', -1, 5, 3.0]);
         const catFormAgilityEffectId = (await db.get(`SELECT id FROM ability_effects WHERE name = 'Cat Form Agility Bonus'`)).id;
 
-        // Effect to apply the Stealth state - CORRECTLY uses applied_state_id
+        // Effect to apply the Stealth state
         await db.run(`
             INSERT OR IGNORE INTO ability_effects (name, description, effect_type, applied_state_id, duration)
             VALUES (?, ?, ?, ?, ?);
         `, ['Apply Stealth State', 'Puts the caster in Stealth.', 'apply_state', stealthStateId, -1]);
         const applyStealthStateEffectId = (await db.get(`SELECT id FROM ability_effects WHERE name = 'Apply Stealth State'`)).id;
 
-        // --- 4. Link Abilities to Effects ---
         // Cat Form ability triggers both the state application and the stat bonuses.
         await db.run(`
             INSERT OR IGNORE INTO ability_to_effects (ability_id, effect_id) VALUES (?, ?);
@@ -78,7 +72,6 @@ export default async function seedDruidCatForm() {
             INSERT OR IGNORE INTO ability_to_effects (ability_id, effect_id) VALUES (?, ?);
         `, [stealthAbilityId, applyStealthStateEffectId]);
 
-        // --- 5. Link Stealth to its prerequisite state (Cat Form) ---
         await db.run(`
             INSERT OR IGNORE INTO ability_to_states (ability_id, state_id)
             VALUES (?, ?);

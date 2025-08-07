@@ -1,14 +1,9 @@
-// database/seeding/items/materials/herbalism/insertExpertHerbs.js
-// This script inserts Expert-level botanical ingredients into the 'profession_materials' table.
-
-import db from '../../../../../../connection.js'; // Correct path to connection.js
+import db from '../../../../../../connection.js';
 
 export default async function seedExpertHerbs() {
     console.log('Seeding Expert botanical ingredients...');
 
     const herbs = [
-        // --- EXPERT (Sum 12, Max 1 Kind) ---
-        // 17 unique types
         { name: 'Titanbloom', description: 'Found in ancient, untouched forests where ley lines converge.', rarity: 'Expert', type: 'Botanical ingredient', strength_bonus: 12 },
         { name: 'Deeprock Root', description: 'Found in mineral-rich caves.', rarity: 'Expert', type: 'Botanical ingredient', stamina_bonus: 12 },
         { name: 'Cinderbloom', description: 'Growing on exposed mountain peaks frequently struck by lightning.', rarity: 'Expert', type: 'Botanical ingredient', endurance_bonus: 12 },
@@ -27,7 +22,6 @@ export default async function seedExpertHerbs() {
         { name: 'Stormwall Root', description: 'Burrows deep into the soil of storm-ravaged coastlines.', rarity: 'Expert', type: 'Botanical ingredient', toughness_bonus: 12 },
         { name: 'Glyphwood Bark', description: 'From ancient trees found near forgotten runestones or sites of primal magic.', rarity: 'Expert', type: 'Botanical ingredient', armor_flat_bonus: 12 },
 
-        // --- EXPERT CATALYSTS (24% to 1 or 2 Archetypes) ---
         { name: 'Forgeheart Catalyst', description: 'Found in mineral-rich caves.', rarity: 'Expert', type: 'Botanical ingredient (Catalyst)', strength_percent_bonus: 24 },
         { name: 'Skywhisper Catalyst', description: 'Found on trees growing in profoundly sacred groves.', rarity: 'Expert', type: 'Botanical ingredient (Catalyst)', agility_percent_bonus: 24 },
         { name: 'Stargazer Catalyst', description: 'Blooms only in sacred, untainted glades.', rarity: 'Expert', type: 'Botanical ingredient (Catalyst)', intelligence_percent_bonus: 24 },

@@ -4,7 +4,6 @@ export default async function seedDruidClass() {
     console.log('Seeding Druid class, stats, resources, cooldowns, and auto-attacks...');
 
     try {
-        // --- 1. Insert the Druid class and get its ID ---
         await db.run(`
             INSERT OR IGNORE INTO classes (name, description, archetype)
             VALUES ('Druid', 'A shapeshifting class that draws power from nature.', 'Intelligence');
@@ -17,7 +16,6 @@ export default async function seedDruidClass() {
         const druidId = druidResult.id;
         console.log('Druid class entry ensured.');
 
-        // --- 2. Insert the Druid's base stats and growth ---
         const strengthResult = await db.get("SELECT id FROM stats WHERE name = 'Strength'");
         const agilityResult = await db.get("SELECT id FROM stats WHERE name = 'Agility'");
         const intelligenceResult = await db.get("SELECT id FROM stats WHERE name = 'Intelligence'");
@@ -42,7 +40,6 @@ export default async function seedDruidClass() {
         ]);
         console.log("Druid class stats seeded successfully!");
 
-        // --- 3. Seed the Druid's resources: Mana, Energy, and Rage ---
         await db.run(`
             INSERT OR IGNORE INTO resources (name, description, default_max_value, default_regen_rate)
             VALUES (?, ?, ?, ?), (?, ?, ?, ?), (?, ?, ?, ?);
@@ -68,7 +65,6 @@ export default async function seedDruidClass() {
         ]);
         console.log("Druid class resources seeded successfully!");
 
-        // --- 4. Seed global cooldowns and states ---
         await db.run(`
             INSERT OR IGNORE INTO cooldowns (type, duration)
             VALUES ('Druid Global', 1.0),
@@ -87,7 +83,6 @@ export default async function seedDruidClass() {
         const stealthStateId = (await db.get(`SELECT id FROM states WHERE name = 'Stealth'`)).id;
         console.log("Druid global cooldowns and form states ensured.");
 
-        // --- 5. Seed the auto-attack abilities and effects ---
         // Caster Form Effect
         await db.run(`
             INSERT OR IGNORE INTO ability_effects (name, description, effect_type, school, is_removable, scaling_type, value, value_per_level, scaling_value)

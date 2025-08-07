@@ -14,5 +14,4 @@ router.get('/items/shields', async (req, res) => {
     }
 });
 
-// Export the router so it can be used in your main server file
 export default router;

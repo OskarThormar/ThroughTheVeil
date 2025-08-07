@@ -13,12 +13,6 @@ const __dirname = path.dirname(__filename);
 // Define the path to the 'seeding' folder
 const seedingFolderPath = path.join(__dirname, 'seeding');
 
-/**
- * Recursively finds and runs all JavaScript seed files in a given directory.
- * Each seed file is expected to export a default asynchronous function
- * which will be called to perform the data insertion.
- * @param {string} directoryPath - The path to the directory to scan.
- */
 async function runSeedsInDirectory(directoryPath) {
     const entries = await fs.readdir(directoryPath, { withFileTypes: true });
 

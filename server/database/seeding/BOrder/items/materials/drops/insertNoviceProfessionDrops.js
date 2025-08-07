@@ -434,9 +434,9 @@ export default async function seedNoviceDrops() {
                 ]
             );
         }
-        console.log('Success'); // Updated console log
+        console.log('Success'); 
     } catch (err) {
-        console.error('Error: ', err.message); // Updated console log
+        console.error('Error: ', err.message); 
         throw err;
     }
 }

@@ -16,6 +16,7 @@ if (deleteMode) {
     await db.run(`DROP TABLE IF EXISTS professions;`);
     await db.run(`DROP TABLE IF EXISTS specializations;`);
     await db.run(`DROP TABLE IF EXISTS cooldowns;`);
+    await db.run(`DROP TABLE IF EXISTS ability_to_cooldowns`);
     await db.run(`DROP TABLE IF EXISTS effect_to_states;`);
     await db.run(`DROP TABLE IF EXISTS ability_to_states;`);
     await db.run(`DROP TABLE IF EXISTS states;`);

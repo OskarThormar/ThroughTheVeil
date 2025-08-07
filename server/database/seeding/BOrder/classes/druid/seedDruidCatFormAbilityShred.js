@@ -9,7 +9,6 @@ export default async function seedDruidCatFormAbilityShred() {
     try {
         console.log("Seeding Shred ability for Druid Cat Form...");
 
-        // --- 1. Get necessary IDs from the database ---
         const druidResult = await db.get("SELECT id FROM classes WHERE name = 'Druid'");
         if (!druidResult) {
             console.error("Error: Druid class not found. Ensure the main Druid class has been seeded.");
@@ -17,13 +16,10 @@ export default async function seedDruidCatFormAbilityShred() {
         }
         const druidId = druidResult.id;
 
-        // Get cooldown and state IDs from the database
         const druidGlobalCooldownId = (await db.get(`SELECT id FROM cooldowns WHERE type = 'Druid Global'`)).id;
         const catFormStateId = (await db.get(`SELECT id FROM states WHERE name = 'Cat Form'`)).id;
         const energyId = (await db.get(`SELECT id FROM resources WHERE name = 'Energy'`)).id;
 
-        // --- 2. Insert the Shred ability into the abilities table ---
-        // Removed global_cooldown_id as this is now handled by the ability_to_cooldowns table
         await db.run(`
             INSERT OR IGNORE INTO abilities (class_id, name, description, ability_type, cooldown, school, resource_id, resource_cost, positional_req)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
@@ -32,7 +28,7 @@ export default async function seedDruidCatFormAbilityShred() {
             'Shred',
             'Shreds the target, dealing massive physical damage. Usable only in Cat Form.',
             'Damage',
-            0, // This ability is on the global cooldown, not a unique one
+            0,
             'Physical',
             energyId,
             40,
@@ -40,8 +36,6 @@ export default async function seedDruidCatFormAbilityShred() {
         ]);
         const shredAbilityId = (await db.get(`SELECT id FROM abilities WHERE name = 'Shred'`)).id;
 
-        // --- 3. Insert the Shred Damage effect with scaling into the ability_effects table ---
-        // As per the game design, value is 0 and scaling is based on attack_power
         await db.run(`
             INSERT OR IGNORE INTO ability_effects (name, description, effect_type, value, value_per_level, scaling_type, scaling_value, school)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?);
@@ -49,10 +43,10 @@ export default async function seedDruidCatFormAbilityShred() {
             'Shred Damage',
             'Deals physical damage based on attack power.',
             'damage',
-            0.0, // Base damage is 0.0, as all damage scales with stats
-            0.0, // No per-level scaling for this ability
-            'attack_power', // The scaling type is now explicit
-            2.5, // Multiplier for the character's attack power
+            0.0, 
+            0.0, 
+            'attack_power', 
+            2.5,
             'Physical'
         ]);
         const shredDamageEffectId = (await db.get(`SELECT id FROM ability_effects WHERE name = 'Shred Damage'`)).id;

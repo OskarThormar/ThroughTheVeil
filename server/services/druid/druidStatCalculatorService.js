@@ -1,17 +1,9 @@
 import db from '../../database/connection.js';
 
-/**
- * Calculates a druid's total stats at a given level, including bonuses from active states.
- * This version fetches all required data (base stats and bonuses) from the database.
- * @param {number} level The character's current level.
- * @param {string[]} activeStates An array of strings representing the character's active states.
- * @returns {object} An object containing the calculated total stats, including derived stats like attack power.
- */
 export async function calculateDruidStats(level, activeStates) {
     let stats = {};
 
     try {
-        // Find the Druid's class ID
         const druidClassResult = await db.get("SELECT id FROM classes WHERE name = 'Druid'");
         if (!druidClassResult) {
             console.error("Error: Druid class not found in database.");

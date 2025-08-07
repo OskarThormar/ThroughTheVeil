@@ -4,7 +4,6 @@ import { calculateAbilityDamage } from '../../../services/druid/druidDamageCalcu
 
 const router = Router();
 
-// GET /api/druid/damage?ability=Shred&level=31
 router.get('/druid/damage', async (req, res) => {
     try {
         const abilityName = req.query.ability;
@@ -14,8 +13,6 @@ router.get('/druid/damage', async (req, res) => {
             return res.status(400).json({ error: 'Invalid ability name or level parameter.' });
         }
 
-        // We need the character's final stats to calculate ability damage.
-        // The form is hardcoded to 'Cat Form' for this example.
         const stats = await calculateDruidStats(level, ['Cat Form']);
         
         const damage = await calculateAbilityDamage(abilityName, level, stats);

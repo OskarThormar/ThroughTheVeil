@@ -109,29 +109,22 @@
 </Router>
 
 <style>
-    /*
-      Define CSS variables for consistent spacing.
-      These can be used in Tailwind's arbitrary value syntax like pt-[var(--variable-name)].
-      Adjust these values to match the actual rendered height/width of your Navbar and Footer.
-    */
     :root {
         --navbar-mobile-height: v-bind(NAVBAR_MOBILE_HEIGHT);
         --navbar-desktop-width: v-bind(NAVBAR_DESKTOP_WIDTH);
         --footer-height: v-bind(FOOTER_HEIGHT);
     }
 
-    /* Additional styles for main content area if needed */
     main {
-        /* On desktop, the main content should be pushed to the right of the fixed sidebar.
-           On mobile, it's pushed down by the fixed top navbar. */
-        margin-top: var(--navbar-mobile-height); /* For mobile */
-        margin-left: 0; /* Default for mobile */
+
+        margin-top: var(--navbar-mobile-height);
+        margin-left: 0; 
     }
 
-    @media (min-width: 768px) { /* Tailwind's 'md' breakpoint */
+    @media (min-width: 768px) { 
         main {
-            margin-top: 0; /* No top margin needed on desktop as navbar is on the side */
-            margin-left: var(--navbar-desktop-width); /* Push content right of sidebar */
+            margin-top: 0; 
+            margin-left: var(--navbar-desktop-width); 
         }
     }
 </style>

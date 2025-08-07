@@ -1,7 +1,4 @@
-// database/seeding/items/materials/skinning/insertApprenticeSkins.js
-// This script inserts Apprentice-level skinning produce into the 'profession_materials' table.
-
-import db from '../../../../connection.js'; // Correct path to connection.js
+import db from '../../../../connection.js';
 
 export default async function seedNoviceSkins() {
     console.log('Seeding Novice Skinning');

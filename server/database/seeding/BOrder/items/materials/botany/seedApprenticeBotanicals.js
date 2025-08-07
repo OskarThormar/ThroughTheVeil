@@ -1,14 +1,9 @@
-// database/seeding/items/materials/herbalism/insertApprenticeHerbs.js
-// This script inserts Apprentice-level botanical ingredients into the 'profession_materials' table.
-
-import db from '../../../../../connection.js'; // Correct path to connection.js
+import db from '../../../../../connection.js'; 
 
 export default async function seedApprenticeHerbs() {
     console.log('Seeding Apprentice botanicals');
 
-    const botanicals = [ // Renamed 'herbs' to 'botanicals'
-        // --- APPRENTICE (Sum 6, Max 1 Kind) ---
-        // 17 unique types (15 psychic alignments + Toughness + Armor_flat_bonus)
+    const botanicals = [ 
         { name: 'Ironbloom', description: 'Found in ancient, undisturbed forests.', rarity: 'Apprentice', type: 'Botanical', subtype: 'Flower', strength_bonus: 6 },
         { name: 'Deepmoss', description: 'From resilient trees in oldest forests.', rarity: 'Apprentice', type: 'Botanical', subtype: 'Stalk', stamina_bonus: 6 },
         { name: 'Volcaroot', description: 'Thriving near volcanic vents.', rarity: 'Apprentice', type: 'Botanical', subtype: 'Root', endurance_bonus: 6 },
@@ -27,14 +22,13 @@ export default async function seedApprenticeHerbs() {
         { name: 'Stonehide', description: 'Found in the deepest, most stable caverns.', rarity: 'Apprentice', type: 'Botanical', toughness_bonus: 6 },
         { name: 'Crimsonbark', description: 'From ancient trees.', rarity: 'Apprentice', type: 'Botanical', armor_flat_bonus: 6 },
 
-        // --- APPRENTICE CATALYSTS (12% to 1 or 2 Archetypes) ---
         { name: 'Terra Catalyst', description: 'Found in temperate forests.', rarity: 'Apprentice', type: 'Botanical (Catalyst)', strength_percent_bonus: 12 },
         { name: 'Azure Catalyst', description: 'Found on bushes in open meadows.', rarity: 'Apprentice', type: 'Botanical (Catalyst)', agility_percent_bonus: 12 },
         { name: 'Runeglow Catalyst', description: 'Found near ancient magical ruins.', rarity: 'Apprentice', type: 'Botanical (Catalyst)', intelligence_percent_bonus: 12 }
     ];
 
     try {
-        for (const botanical of botanicals) { // Renamed 'herb' to 'botanical'
+        for (const botanical of botanicals) { 
             await db.run(
                 `INSERT OR IGNORE INTO profession_materials (
                     name, description, rarity, type, weight,
@@ -68,9 +62,9 @@ export default async function seedApprenticeHerbs() {
                 ]
             );
         }
-        console.log('Success'); // Updated console log
+        console.log('Success'); 
     } catch (err) {
-        console.error('Error during Apprentice botanical seeding:', err.message); // Updated console log
+        console.error('Error during Apprentice botanical seeding:', err.message); 
         throw err;
     }
 }

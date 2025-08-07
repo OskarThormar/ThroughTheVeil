@@ -1,4 +1,3 @@
-// database/routers/professions/professionMaterialsRouter.js
 import { Router } from 'express';
 import db from '../../database/connection.js';
 
@@ -15,5 +14,4 @@ router.get('/materials/vendor', async (req, res) => {
     }
 });
 
-// Export the router so it can be used in your main server file
 export default router;
