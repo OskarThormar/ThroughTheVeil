@@ -14,10 +14,54 @@ app.use(cors({
     credentials: true
 }));
 
+import session from 'express-session';
 
+const sessionMiddleware = session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false }
+});
 
+app.use(sessionMiddleware);
+
+import http from 'http';
+
+const server = http.createServer(app);
+
+import { Server } from 'socket.io';
+
+const io = new Server(server);
+
+io.on("connection", (socket) => {
+    console.log("A client connected", socket.id);
+
+    socket.on("client-sends-color", (data) => {
+
+        console.log(data);
+        // emits to all sockets in the io namespace
+        io.emit("server-sends-color", data);
+
+        // broadcasts to all other sockets but itself
+        // socket.broadcast.emit("server-sends-color", data);
+
+        // emits to the socket itself
+        // socket.emit("server-sends-color", data);
+    });
+
+    
+    socket.on("disconnect", () => {
+        console.log("A client disconnected", socket.id);
+    });
+});
+
+import authRouter from './routers/authRouter.js';
+app.use('/api', authRouter); 
+
+import authMiddleware from './middleware/authMiddleware.js';
 import weaponRouter from './routers/weaponsRouter.js';
-app.use('/api', weaponRouter);       
+app.use('/api', authMiddleware, weaponRouter);        
+
 import armorRouter from './routers/armorRouter.js';
 app.use('/api', armorRouter);       
 
@@ -44,6 +88,6 @@ app.use('/api', druidDamageRouter);
 
 
 const PORT = Number(process.env.PORT) || 8080;
-const server = app.listen(PORT, () => {
+server.listen(PORT, () => {
     console.log("Server is running on port", server.address().port);
 });

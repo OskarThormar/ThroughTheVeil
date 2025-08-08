@@ -14,7 +14,9 @@
         error = null;
 
         try {
-            const response = await fetch('/api/materials/botanicals');
+            const response = await fetch('/api/materials/botanicals', {
+                credentials: 'include' // This is the crucial fix for session-based auth
+            });
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status} - ${response.statusText}`);
             }

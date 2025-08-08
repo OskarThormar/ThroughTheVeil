@@ -49,7 +49,10 @@
         isError = false;
 
         try {
-            const response = await fetch(`/api/druid/stats?level=${level}&form=${selectedForm}`);
+            // FIX: Added `credentials: 'include'` to send the session cookie.
+            const response = await fetch(`/api/druid/stats?level=${level}&form=${selectedForm}`, {
+                credentials: 'include'
+            });
             const data = await response.json();
 
             if (!response.ok) {
@@ -86,7 +89,10 @@
         abilityCooldowns[abilityName] = simulationTime + ability.cooldown;
 
         try {
-            const response = await fetch(`/api/druid/damage?ability=${abilityName}&level=${level}&form=${selectedForm}`);
+            // FIX: Added `credentials: 'include'` to send the session cookie.
+            const response = await fetch(`/api/druid/damage?ability=${abilityName}&level=${level}&form=${selectedForm}`, {
+                credentials: 'include'
+            });
             const data = await response.json();
 
             if (response.ok) {
@@ -192,27 +198,27 @@
 
             <div class="w-full h-8 bg-gray-700 rounded-lg overflow-hidden relative">
                 <div class="absolute inset-0 bg-blue-500 transition-all duration-100 ease-linear"
-                     style="width: {(currentMana / maxMana) * 100}%;"></div>
+                        style="width: {(currentMana / maxMana) * 100}%;"></div>
                 <div class="relative z-10 text-center text-sm font-semibold leading-8 text-white"
-                     style="text-shadow: 1px 1px 0px #000;">
+                        style="text-shadow: 1px 1px 0px #000;">
                     Mana: {Math.round(currentMana)} / {maxMana}
                 </div>
             </div>
 
             <div class="w-full h-8 bg-gray-700 rounded-lg overflow-hidden relative">
                 <div class="absolute inset-0 bg-yellow-400 transition-all duration-100 ease-linear"
-                     style="width: {(currentEnergy / maxEnergy) * 100}%;"></div>
+                        style="width: {(currentEnergy / maxEnergy) * 100}%;"></div>
                 <div class="relative z-10 text-center text-sm font-semibold leading-8 text-black"
-                     style="text-shadow: 1px 1px 0px #fff;">
+                        style="text-shadow: 1px 1px 0px #fff;">
                     Energy: {Math.round(currentEnergy)} / {maxEnergy}
                 </div>
             </div>
 
             <div class="w-full h-8 bg-gray-700 rounded-lg overflow-hidden relative">
                 <div class="absolute inset-0 bg-red-500 transition-all duration-100 ease-linear"
-                     style="width: {(currentRage / maxRage) * 100}%;"></div>
+                        style="width: {(currentRage / maxRage) * 100}%;"></div>
                 <div class="relative z-10 text-center text-sm font-semibold leading-8 text-white"
-                     style="text-shadow: 1px 1px 0px #000;">
+                        style="text-shadow: 1px 1px 0px #000;">
                     Rage: {Math.round(currentRage)} / {maxRage}
                 </div>
             </div>
@@ -224,19 +230,19 @@
             </div>
 
             <input type="number" 
-                   bind:value={level} 
-                   placeholder="Enter level (1-60)"
-                   class="p-3 rounded-lg bg-[#1a1a2e] border border-transparent focus:outline-none focus:ring-2 focus:ring-[#8c7ae6] transition-colors duration-200 text-white placeholder-gray-500">
+                        bind:value={level} 
+                        placeholder="Enter level (1-60)"
+                        class="p-3 rounded-lg bg-[#1a1a2e] border border-transparent focus:outline-none focus:ring-2 focus:ring-[#8c7ae6] transition-colors duration-200 text-white placeholder-gray-500">
             
             <select bind:value={selectedForm} 
-                    class="p-3 rounded-lg bg-[#1a1a2e] border border-transparent focus:outline-none focus:ring-2 focus:ring-[#8c7ae6] transition-colors duration-200 text-white">
+                        class="p-3 rounded-lg bg-[#1a1a2e] border border-transparent focus:outline-none focus:ring-2 focus:ring-[#8c7ae6] transition-colors duration-200 text-white">
                 <option value="Caster Form">Caster Form</option>
                 <option value="Cat Form">Cat Form</option>
             </select>
             
             <button on:click={runSimulation}
-                    disabled={isRunning || !characterStats}
-                    class="w-full p-3 bg-[#4a7ecf] hover:bg-[#6c9ae6] text-white font-semibold rounded-lg shadow-md transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed">
+                        disabled={isRunning || !characterStats}
+                        class="w-full p-3 bg-[#4a7ecf] hover:bg-[#6c9ae6] text-white font-semibold rounded-lg shadow-md transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed">
                 {isRunning ? 'Simulating...' : 'Run Simulation'}
             </button>
         </div>
@@ -286,9 +292,5 @@
 </div>
 
 <style>
-    body {
-        font-family: 'Inter', sans-serif;
-        background-color: #1a1a2e;
-        color: #e0e0e0;
-    }
+
 </style>

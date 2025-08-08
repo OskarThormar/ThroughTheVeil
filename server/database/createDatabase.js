@@ -5,6 +5,7 @@ const deleteMode = process.argv.includes("--delete");
 
 if (deleteMode) {
     console.log("Delete mode active: Dropping existing tables...");
+    await db.run(`DROP TABLE IF EXISTS users;`);
     await db.run(`DROP TABLE IF EXISTS creature_drops;`);
     await db.run(`DROP TABLE IF EXISTS object_drops;`);
     await db.run(`DROP TABLE IF EXISTS creatures;`);
@@ -29,6 +30,14 @@ if (deleteMode) {
     await db.run(`DROP TABLE IF EXISTS stats;`);
     console.log("Old tables dropped (if they existed).");
 }
+
+await db.exec(`
+    CREATE TABLE IF NOT EXISTS users (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        username TEXT NOT NULL UNIQUE,
+        password TEXT NOT NULL
+    );
+`);
 
 await db.exec(`
     -- Table for 'stats' (core character attributes like Strength, Agility)
