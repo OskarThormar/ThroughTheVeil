@@ -1,59 +1,42 @@
 <script>
-    import { onMount } from 'svelte'; // Imports Svelte's lifecycle function 'onMount'
+    import { onMount } from 'svelte'; 
 
-    let shields = []; // Stores all fetched shields of type 'Shield'
+    let shields = [];
     let loading = true;
     let error = null;
 
-    // State for the selected subtype from the dropdown.
-    // 'All' is the default option to show all shields initially.
     let selectedSubtype = 'All';
 
-    // State to hold unique subtypes extracted from fetched shields, for dropdown options.
     let uniqueSubtypes = [];
 
-    // Reactive declaration: filteredShields will automatically re-calculate whenever
-    // 'shields' or 'selectedSubtype' changes.
     $: filteredShields = shields.filter(item =>
         selectedSubtype === 'All' || item.subtype === selectedSubtype
     );
 
-    // Function to fetch shield items
     async function fetchShields() {
-        loading = true; // Set loading to true before fetching
-        error = null;   // Clear any previous errors
+        loading = true; 
+        error = null;   
 
         try {
-            // Make a GET request to the backend API endpoint for 'Shield' category.
-            // This path '/api/items/shields' should match your backend router definition.
             const response = await fetch('/api/items/shields'); 
 
-            // Check if the request was successful (status code 2xx)
             if (!response.ok) {
-                // If not successful, throw an error with the status text
                 throw new Error(`HTTP error! status: ${response.status} - ${response.statusText}`);
             }
 
-            // Parse the JSON response
             const fetchedData = await response.json();
-            shields = fetchedData; // Assign fetched data to the 'shields' array
+            shields = fetchedData; 
 
-            // After fetching, extract unique subtypes for the dropdown.
-            // 'filter(Boolean)' removes any null or undefined subtypes.
-            // 'Set' ensures only unique values.
-            // We add 'All' as the first option for the dropdown.
             uniqueSubtypes = ['All', ...new Set(shields.map(item => item.subtype).filter(Boolean))];
 
         } catch (e) {
-            // Catch any errors that occur during the fetch operation
             console.error("Failed to fetch shields:", e);
-            error = e.message; // Store the error message to display to the user
+            error = e.message; 
         } finally {
-            loading = false; // Set loading to false once the fetch operation is complete
+            loading = false; 
         }
     }
 
-    // Call fetchShields when the component is first mounted
     onMount(() => {
         fetchShields(); 
     });
@@ -62,7 +45,6 @@
 <div class="p-6 max-w-4xl mx-auto bg-gray-900 text-white rounded-xl shadow-lg mt-10">
     <h1 class="text-3xl font-bold mb-6 text-center text-teal-300">All Shields</h1>
 
-    <!-- Dropdown Menu for Subtype Filtering -->
     <div class="mb-8 p-4 bg-gray-800 rounded-lg shadow-md flex flex-col sm:flex-row items-center justify-between gap-4">
         <label for="subtype-select" class="text-lg font-semibold text-gray-300 mr-2">Filter by Subtype:</label>
         <select
@@ -76,7 +58,6 @@
         </select>
     </div>
 
-    <!-- Conditional Rendering for Loading, Error, or No Shields -->
     {#if loading}
         <p class="text-center text-gray-400">Loading shields...</p>
     {:else if error}
@@ -90,7 +71,6 @@
     {:else if filteredShields.length === 0}
         <p class="text-center text-gray-400">No shields found matching the selected criteria.</p>
     {:else}
-        <!-- Display Filtered Shields -->
         <ul class="space-y-4">
             {#each filteredShields as item (item && item.id ? item.id : item.name || Math.random())}
                 {#if item}
@@ -119,6 +99,5 @@
 </div>
 
 <style>
-    /* TailwindCSS is loaded via CDN in the HTML wrapper for Canvas,
-       so most styling uses Tailwind classes directly in the markup. */
+
 </style>

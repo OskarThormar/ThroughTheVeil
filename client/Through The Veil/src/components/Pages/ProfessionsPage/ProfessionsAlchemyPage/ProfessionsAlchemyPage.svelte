@@ -13,7 +13,6 @@
     </p>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <!-- Draught Box -->
         <div class="item-mechanics-card">
             <h2 class="text-2xl font-semibold text-blue-300 mb-3 text-center">Draughts</h2>
             <p class="text-gray-300">
@@ -22,7 +21,6 @@
             </p>
         </div>
 
-        <!-- Bomb Box -->
         <div class="item-mechanics-card">
             <h2 class="text-2xl font-semibold text-red-300 mb-3 text-center">Bombs</h2>
             <p class="text-gray-300">
@@ -50,11 +48,11 @@
 
 <style>
     .item-mechanics-card {
-        background-color: #1f2937; /* A slightly lighter dark gray */
+        background-color: #1f2937; 
         padding: 1.75rem;
         border-radius: 0.75rem;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-        border: 1px solid #374151; /* Subtle border */
+        border: 1px solid #374151; 
         transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
 

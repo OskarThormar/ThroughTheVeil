@@ -117,7 +117,6 @@
             </p>
         </div>
 
-        <!-- Staff Box -->
         <div class="item-mechanics-card">
             <h2 class="text-2xl font-semibold text-fuchsia-400 mb-3 text-center">Staff</h2>
             <p class="text-gray-300">
@@ -134,11 +133,11 @@
 
 <style>
     .item-mechanics-card {
-        background-color: #1f2937; /* A slightly lighter dark gray */
+        background-color: #1f2937; 
         padding: 1.75rem;
         border-radius: 0.75rem;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-        border: 1px solid #374151; /* Subtle border */
+        border: 1px solid #374151; 
         transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
 

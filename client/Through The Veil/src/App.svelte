@@ -8,11 +8,9 @@
     });
     import { Router, Route } from 'svelte-routing';
 
-    //components
     import Navbar from './components/Navbar/Navbar.svelte';
     import Footer from './components/Footer/Footer.svelte';
 
-    //pages
     import HomePage from './components/Pages/HomePage/HomePage.svelte';
     import SimulatorPage from './components/Pages/SimulatorPage/SimulatorPage.svelte';
 
@@ -97,7 +95,6 @@
 
     </main>
 
-    <!-- Footer: Fixed at the bottom -->
     <footer class="
         fixed bottom-0 left-0 right-0 z-40
         w-full h-16 bg-gray-800 shadow-lg flex items-center justify-center

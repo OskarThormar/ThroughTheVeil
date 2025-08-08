@@ -1,44 +1,34 @@
 <script>
-    import { onMount } from 'svelte'; // Imports Svelte's lifecycle function 'onMount'
+    import { onMount } from 'svelte'; 
 
-    let botanicals = []; // Stores all fetched botanicals
+    let botanicals = []; 
     let loading = true;
     let error = null;
 
-    // Function to fetch botanical materials
     async function fetchBotanicals() {
-        loading = true; // Set loading to true before fetching
-        error = null;    // Clear any previous errors
+        loading = true; 
+        error = null;    
 
         try {
-            // Make a GET request to the backend API endpoint for 'Botanical' category.
             const response = await fetch('/api/materials/botanicals');
 
-            // Check if the request was successful (status code 2xx)
             if (!response.ok) {
-                // If not successful, throw an error with the status text
                 throw new Error(`HTTP error! status: ${response.status} - ${response.statusText}`);
             }
 
-            // Parse the JSON response
             const fetchedData = await response.json();
-            botanicals = fetchedData; // Assign fetched data to the 'botanicals' array
 
         } catch (e) {
-            // Catch any errors that occur during the fetch operation
             console.error("Failed to fetch botanicals:", e);
-            error = e.message; // Store the error message to display to the user
         } finally {
-            loading = false; // Set loading to false once the fetch operation is complete
+            loading = false;
         }
     }
 
-    // Call fetchBotanicals when the component is first mounted
     onMount(() => {
         fetchBotanicals();
     });
 
-    // Reactive declarations for each rarity level
     $: noviceBotanicals = botanicals.filter(item => item.rarity === 'Novice');
     $: apprenticeBotanicals = botanicals.filter(item => item.rarity === 'Apprentice');
     $: experiencedBotanicals = botanicals.filter(item => item.rarity === 'Experienced');
@@ -46,13 +36,8 @@
     $: masterBotanicals = botanicals.filter(item => item.rarity === 'Master');
 </script>
 
-<!-- Main content area, adjusted for sidebar -->
-<!-- On small screens (sm) and larger, it shifts right by 64 units (matching a 64-unit wide sidebar) -->
-<!-- Added 'w-full' to make the content area take up the full available width after the margin -->
-<!-- Added 'pr-0' to remove padding on the right side, allowing content to extend to the edge -->
 <div class="p-6 pr-0 font-sans w-full">
     <div class="flex flex-wrap justify-center gap-2">
-        <!-- Novice Botanicals Section -->
         <div class="p-6 bg-gray-900 text-white rounded-xl shadow-lg flex-1 min-w-[280px] max-w-xs">
             <h1 class="text-2xl font-bold mb-6 text-center text-teal-300">Novice Botanicals</h1>
             {#if loading}
@@ -80,7 +65,6 @@
             {/if}
         </div>
 
-        <!-- Apprentice Botanicals Section -->
         <div class="p-6 bg-gray-900 text-white rounded-xl shadow-lg flex-1 min-w-[280px] max-w-xs">
             <h1 class="text-2xl font-bold mb-6 text-center text-teal-300">Apprentice Botanicals</h1>
             {#if loading}
@@ -108,7 +92,6 @@
             {/if}
         </div>
 
-        <!-- Experienced Botanicals Section -->
         <div class="p-6 bg-gray-900 text-white rounded-xl shadow-lg flex-1 min-w-[280px] max-w-xs">
             <h1 class="text-2xl font-bold mb-6 text-center text-teal-300">Experienced Botanicals</h1>
             {#if loading}
@@ -136,7 +119,6 @@
             {/if}
         </div>
 
-        <!-- Expert Botanicals Section -->
         <div class="p-6 bg-gray-900 text-white rounded-xl shadow-lg flex-1 min-w-[280px] max-w-xs">
             <h1 class="text-2xl font-bold mb-6 text-center text-teal-300">Expert Botanicals</h1>
             {#if loading}
@@ -164,7 +146,6 @@
             {/if}
         </div>
 
-        <!-- Master Botanicals Section -->
         <div class="p-6 bg-gray-900 text-white rounded-xl shadow-lg flex-1 min-w-[280px] max-w-xs">
             <h1 class="text-2xl font-bold mb-6 text-center text-teal-300">Master Botanicals</h1>
             {#if loading}

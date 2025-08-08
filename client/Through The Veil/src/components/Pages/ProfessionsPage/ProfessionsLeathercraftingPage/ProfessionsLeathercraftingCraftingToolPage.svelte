@@ -1,33 +1,24 @@
 <script>
     import { onMount } from 'svelte';
-  import MechanicsPage from '../../MechanicsPage/MechanicsPage.svelte';
+    import MechanicsPage from '../../MechanicsPage/MechanicsPage.svelte';
 
-    // Stores all fetched materials, categorized by type
+
     let allSkinnings = [];
-    let allVendorMaterials = []; // For stitchings and rivets
+    let allVendorMaterials = []; 
     let allTailoringPaddings = [];
     let allDrops = [];
     let loading = true;
     let error = null;
 
-    // Array to hold materials selected for crafting (up to 9 slots)
-    // Each element will hold a material object or null
     let craftingSlots = [null, null, null, null, null, null, null, null, null];
 
-    // Reactive declaration for the elixir preview.
-    // This will automatically re-calculate whenever craftingSlots changes.
     $: leathercraftingPreview = calculateLeathercraftingPreview(craftingSlots);
 
-    /**
-     * Fetches all material types from their respective API endpoints.
-     * Assigns a 'type' property to each material for slot validation.
-     */
     async function fetchMaterials() {
         loading = true;
         error = null;
 
         try {
-            // Fetch skinnings
             const skinningsResponse = await fetch('/api/materials/skinnings');
             if (!skinningsResponse.ok) {
                 throw new Error(`HTTP error fetching skinnings! status: ${skinningsResponse.status}`);
@@ -40,15 +31,13 @@
             }
             allTailoringPaddings = (await tailoringResponse.json()).map(item => ({... item, type: 'padding'}));
 
-            // Fetch vendor materials (stitchings and rivets)
             const vendorResponse = await fetch('/api/materials/vendor');
             if (!vendorResponse.ok) {
                 throw new Error(`HTTP error fetching vendor materials! status: ${vendorResponse.status}`);
             }
-            // Assuming vendor materials will have a 'subtype' or 'name' that indicates 'stitching' or 'rivet'
-            // For simplicity, we'll assign 'stitching' or 'rivet' directly as the type based on name, or a generic 'vendor' if not specific
+
             allVendorMaterials = (await vendorResponse.json()).map(item => {
-                let type = 'vendor'; // Default type
+                let type = 'vendor'; 
                 if (item.name && item.name.toLowerCase().includes('stitching')) {
                     type = 'stitching';
                 } else if (item.name && item.name.toLowerCase().includes('rivet')) {
@@ -60,7 +49,6 @@
                 return { ...item, type };
             });
 
-            // Fetch drops
             const dropsResponse = await fetch('/api/materials/drops');
             if (!dropsResponse.ok) {
                 throw new Error(`HTTP error fetching drops! status: ${dropsResponse.status}`);
@@ -75,12 +63,8 @@
         }
     }
 
-    /**
-     * Adds an item to the next available crafting slot, respecting slot type restrictions.
-     * @param {Object} item The material item to add.
-     */
+
     function addItemToSlot(item) {
-        // Find the first empty slot that is valid for this item type
         const emptyValidSlotIndex = craftingSlots.findIndex((slot, index) => {
             if (slot === null) {
                 if ((index === 0 || index === 1 || index === 2) && item.type === 'skinning') {
@@ -97,34 +81,20 @@
         });
 
         if (emptyValidSlotIndex !== -1) {
-            // Create a new array to trigger Svelte's reactivity
             craftingSlots = [...craftingSlots];
             craftingSlots[emptyValidSlotIndex] = item;
         } else {
-            // Optional: Provide user feedback if no valid slots are available
             console.log(`No valid crafting slot available for ${item.name} (${item.type}) or all slots are full!`);
-            // You could add a simple message box here instead of console.log
         }
     }
 
-    /**
-     * Removes an item from a specific crafting slot.
-     * @param {number} index The index of the slot to clear.
-     */
     function removeItemFromSlot(index) {
         if (craftingSlots[index] !== null) {
-            // Create a new array to trigger Svelte's reactivity
             craftingSlots = [...craftingSlots];
             craftingSlots[index] = null;
         }
     }
 
-    /**
-     * Checks if a given item can be added to any valid, empty crafting slot.
-     * Used to enable/disable the "Add to Crafting" buttons.
-     * @param {Object} item The material item to check.
-     * @returns {boolean} True if the item can be added to a valid slot, false otherwise.
-     */
     function canAddItemToAnyValidSlot(item) {
         return craftingSlots.some((slot, index) => {
             if (slot === null) {
@@ -148,11 +118,6 @@
         });
     }
 
-    /**
-     * Calculates the combined properties of the elixir based on items in crafting slots.
-     * @param {Array<Object|null>} slots The array of crafting slot items.
-     * @returns {Object} An object representing the combined elixir properties.
-     */
     function calculateLeathercraftingPreview(slots) {
         let preview = {
             strength_bonus: 0,
@@ -179,12 +144,11 @@
             total_ingredients: 0
         };
 
-        let uniqueEffects = new Set(); // Use a temporary Set to collect unique effects
+        let uniqueEffects = new Set(); 
 
         slots.forEach(item => {
             if (item) {
                 preview.total_ingredients++;
-                // Sum up flat bonuses
                 preview.strength_bonus += item.strength_bonus || 0;
                 preview.stamina_bonus += item.stamina_bonus || 0;
                 preview.endurance_bonus += item.endurance_bonus || 0;
@@ -203,25 +167,21 @@
                 preview.toughness_bonus += item.toughness_bonus || 0;
                 preview.armor_flat_bonus += item.armor_flat_bonus || 0;
 
-                // Sum up percentage bonuses
                 preview.strength_percent_bonus += item.strength_percent_bonus || 0.0;
                 preview.agility_percent_bonus += item.agility_percent_bonus || 0.0;
                 preview.intelligence_percent_bonus += item.intelligence_percent_bonus || 0.0;
 
-                // Add active effects to the temporary Set
                 if (item.active_effect_text) {
                     uniqueEffects.add(item.active_effect_text);
                 }
             }
         });
 
-        // Convert the temporary Set of effects to a comma-separated string for display
         preview.active_effects = Array.from(uniqueEffects).join(', ');
 
         return preview;
     }
 
-    // Call fetchMaterials when the component is first mounted
     onMount(() => {
         fetchMaterials();
     });
@@ -230,7 +190,6 @@
 <div class="p-6 max-w-8xl mx-auto bg-gray-900 text-white rounded-xl shadow-lg mt-10 mb-20 font-inter">
     <h1 class="text-3xl font-bold mb-6 text-center text-teal-300">Elixir Crafting Station</h1>
 
-    <!-- Crafting Slots Section -->
     <div class="mb-8 p-6 bg-gray-800 rounded-lg shadow-md border border-gray-700">
         <h2 class="text-2xl font-semibold mb-4 text-teal-300 text-center">
             Crafting Slots ({leathercraftingPreview.total_ingredients}/6)
@@ -276,14 +235,12 @@
         </div>
     </div>
 
-    <!-- Elixir Preview Section -->
     <div class="mb-8 p-6 bg-gray-800 rounded-lg shadow-md border border-gray-700">
         <h2 class="text-2xl font-semibold mb-4 text-teal-300">Elixir Preview</h2>
         {#if leathercraftingPreview.total_ingredients === 0}
             <p class="text-gray-400 text-center">Add ingredients to see elixir properties.</p>
         {:else}
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-gray-300">
-                <!-- Flat Bonuses -->
                 {#if leathercraftingPreview.strength_bonus > 0}<p><span class="font-medium">Strength:</span> +{leathercraftingPreview.strength_bonus}</p>{/if}
                 {#if leathercraftingPreview.stamina_bonus > 0}<p><span class="font-medium">Stamina:</span> +{leathercraftingPreview.stamina_bonus}</p>{/if}
                 {#if leathercraftingPreview.endurance_bonus > 0}<p><span class="font-medium">Endurance:</span> +{leathercraftingPreview.endurance_bonus}</p>{/if}
@@ -302,18 +259,15 @@
                 {#if leathercraftingPreview.toughness_bonus > 0}<p><span class="font-medium">Toughness:</span> +{leathercraftingPreview.toughness_bonus}</p>{/if}
                 {#if leathercraftingPreview.armor_flat_bonus > 0}<p><span class="font-medium">Armor:</span> +{leathercraftingPreview.armor_flat_bonus}</p>{/if}
 
-                <!-- Percentage Bonuses -->
                 {#if leathercraftingPreview.strength_percent_bonus > 0}<p><span class="font-medium">Strength %:</span> +{leathercraftingPreview.strength_percent_bonus}%</p>{/if}
                 {#if leathercraftingPreview.agility_percent_bonus > 0}<p><span class="font-medium">Agility %:</span> +{leathercraftingPreview.agility_percent_bonus}%</p>{/if}
                 {#if leathercraftingPreview.intelligence_percent_bonus > 0}<p><span class="font-medium">Intelligence %:</span> +{leathercraftingPreview.intelligence_percent_bonus}%</p>{/if}
 
-                <!-- Active Effects -->
                 {#if leathercraftingPreview.active_effects}<p class="col-span-1 md:col-span-2 lg:col-span-3"><span class="font-medium">Effects:</span> {leathercraftingPreview.active_effects}</p>{/if}
             </div>
         {/if}
     </div>
 
-    <!-- Available Materials Section -->
     <div class="p-6 bg-gray-800 rounded-lg shadow-md border border-gray-700">
         <h2 class="text-2xl font-semibold mb-4 text-teal-300">Available Materials</h2>
         {#if loading}
@@ -327,7 +281,6 @@
                 Try Again
             </button>
         {:else}
-            <!-- Skinnings List -->
             {#if allSkinnings.length > 0}
                 <h3 class="text-xl font-semibold mb-3 text-teal-200 mt-6">Skinnings</h3>
                 <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
@@ -360,7 +313,6 @@
                 <p class="text-center text-gray-400">No skinnings found.</p>
             {/if}
 
-            <!-- Vendor Materials List -->
             {#if allVendorMaterials.length > 0}
                 <h3 class="text-xl font-semibold mb-3 text-teal-200 mt-6">Vendor Materials (Stitchings & Rivets)</h3>
                 <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
@@ -393,7 +345,6 @@
                 <p class="text-center text-gray-400">No vendor materials found.</p>
             {/if}
 
-            <!-- Drops List -->
             {#if allDrops.length > 0}
                 <h3 class="text-xl font-semibold mb-3 text-teal-200 mt-6">Drops</h3>
                 <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -430,7 +381,6 @@
 </div>
 
 <style>
-    /* Ensure Inter font is used if not globally defined */
     .font-inter {
         font-family: 'Inter', sans-serif;
     }

@@ -1,59 +1,42 @@
 <script>
-    import { onMount } from 'svelte'; // Imports Svelte's lifecycle function 'onMount'
+    import { onMount } from 'svelte'; 
 
-    let armor = []; // Stores all fetched armor items
+    let armor = [];
     let loading = true;
     let error = null;
 
-    // State for the selected subtype from the dropdown.
-    // 'All' is the default option to show all armor initially.
     let selectedSubtype = 'All';
 
-    // State to hold unique subtypes extracted from fetched armor, for dropdown options.
     let uniqueSubtypes = [];
 
-    // Reactive declaration: filteredArmor will automatically re-calculate whenever
-    // 'armor' or 'selectedSubtype' changes.
     $: filteredArmor = armor.filter(item =>
         selectedSubtype === 'All' || item.subtype === selectedSubtype
     );
 
-    // Function to fetch armor items
     async function fetchArmor() {
-        loading = true; // Set loading to true before fetching
-        error = null;   // Clear any previous errors
+        loading = true; 
+        error = null;  
 
         try {
-            // Make a GET request to the backend API endpoint for 'Armor' category.
-            // This path '/api/items/armor' should match your backend router definition.
             const response = await fetch('/api/items/armor'); 
 
-            // Check if the request was successful (status code 2xx)
             if (!response.ok) {
-                // If not successful, throw an error with the status text
                 throw new Error(`HTTP error! status: ${response.status} - ${response.statusText}`);
             }
 
-            // Parse the JSON response
             const fetchedData = await response.json();
-            armor = fetchedData; // Assign fetched data to the 'armor' array
+            armor = fetchedData;
 
-            // After fetching, extract unique subtypes for the dropdown.
-            // 'filter(Boolean)' removes any null or undefined subtypes.
-            // 'Set' ensures only unique values.
-            // We add 'All' as the first option for the dropdown.
             uniqueSubtypes = ['All', ...new Set(armor.map(item => item.subtype).filter(Boolean))];
 
         } catch (e) {
-            // Catch any errors that occur during the fetch operation
             console.error("Failed to fetch armor:", e);
-            error = e.message; // Store the error message to display to the user
+            error = e.message; 
         } finally {
-            loading = false; // Set loading to false once the fetch operation is complete
+            loading = false; 
         }
     }
 
-    // Call fetchArmor when the component is first mounted
     onMount(() => {
         fetchArmor(); 
     });
@@ -62,7 +45,6 @@
 <div class="p-6 max-w-4xl mx-auto bg-gray-900 text-white rounded-xl shadow-lg mt-10">
     <h1 class="text-3xl font-bold mb-6 text-center text-teal-300">All Armor</h1>
 
-    <!-- Dropdown Menu for Subtype Filtering -->
     <div class="mb-8 p-4 bg-gray-800 rounded-lg shadow-md flex flex-col sm:flex-row items-center justify-between gap-4">
         <label for="subtype-select" class="text-lg font-semibold text-gray-300 mr-2">Filter by Subtype:</label>
         <select
@@ -76,7 +58,6 @@
         </select>
     </div>
 
-    <!-- Conditional Rendering for Loading, Error, or No Armor -->
     {#if loading}
         <p class="text-center text-gray-400">Loading armor...</p>
     {:else if error}
@@ -90,7 +71,6 @@
     {:else if filteredArmor.length === 0}
         <p class="text-center text-gray-400">No armor found matching the selected criteria.</p>
     {:else}
-        <!-- Display Filtered Armor -->
         <ul class="space-y-4">
             {#each filteredArmor as item (item && item.id ? item.id : item.name || Math.random())}
                 {#if item}
@@ -120,6 +100,5 @@
 </div>
 
 <style>
-    /* TailwindCSS is loaded via CDN in the HTML wrapper for Canvas,
-       so most styling uses Tailwind classes directly in the markup. */
+    
 </style>

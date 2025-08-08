@@ -1,10 +1,5 @@
 import db from '../../../../connection.js';
 
-/**
- * Seeds the 'Shred' ability and its related effects for the Druid class.
- * This version is corrected to use the current database schema and now reflects
- * the game design where abilities have no base damage and scale entirely with stats.
- */
 export default async function seedDruidCatFormAbilityShred() {
     try {
         console.log("Seeding Shred ability for Druid Cat Form...");

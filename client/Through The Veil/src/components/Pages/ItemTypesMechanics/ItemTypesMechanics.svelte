@@ -1,5 +1,5 @@
 <script>
-    import { Link } from 'svelte-routing'; // Import Link for internal navigation
+    import { Link } from 'svelte-routing'; 
 </script>
 
 <div class="p-6 max-w-4xl mx-auto bg-gray-900 text-white rounded-xl shadow-lg mt-10">

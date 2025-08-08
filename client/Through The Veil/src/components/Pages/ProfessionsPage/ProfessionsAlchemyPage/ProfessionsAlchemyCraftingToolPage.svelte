@@ -1,18 +1,14 @@
 <script>
     import { onMount } from 'svelte';
 
-    let allBotanicals = []; // Stores all fetched botanicals
+    let allBotanicals = []; 
     let loading = true;
     let error = null;
 
-    // Array to hold botanicals selected for crafting (up to 6 slots)
-    let craftingSlots = [null, null, null, null, null, null]; // Each element will hold a botanical object or null
+    let craftingSlots = [null, null, null, null, null, null]; 
 
-    // Reactive declaration for the elixir preview.
-    // This will automatically re-calculate whenever craftingSlots changes.
     $: elixirPreview = calculateElixirPreview(craftingSlots);
 
-    // Function to fetch botanical materials
     async function fetchBotanicals() {
         loading = true;
         error = null;
@@ -31,29 +27,23 @@
         }
     }
 
-    // Function to add a botanical to the next available crafting slot
     function addBotanicalToSlot(botanical) {
         const emptySlotIndex = craftingSlots.findIndex(slot => slot === null);
         if (emptySlotIndex !== -1) {
-            // Create a new array to trigger Svelte's reactivity
             craftingSlots = [...craftingSlots];
             craftingSlots[emptySlotIndex] = botanical;
         } else {
-            // Optional: Provide user feedback if all slots are full
             console.log("All crafting slots are full!");
         }
     }
 
-    // Function to remove a botanical from a specific crafting slot
     function removeBotanicalFromSlot(index) {
         if (craftingSlots[index] !== null) {
-            // Create a new array to trigger Svelte's reactivity
             craftingSlots = [...craftingSlots];
             craftingSlots[index] = null;
         }
     }
 
-    // Function to calculate the combined properties of the elixir
     function calculateElixirPreview(slots) {
         let preview = {
             strength_bonus: 0,
@@ -76,16 +66,15 @@
             strength_percent_bonus: 0.0,
             agility_percent_bonus: 0.0,
             intelligence_percent_bonus: 0.0,
-            active_effects: '', // Initialize as an empty string
+            active_effects: '', 
             total_ingredients: 0
         };
 
-        let uniqueEffects = new Set(); // Use a temporary Set to collect unique effects
+        let uniqueEffects = new Set();
 
         slots.forEach(botanical => {
             if (botanical) {
                 preview.total_ingredients++;
-                // Sum up flat bonuses
                 preview.strength_bonus += botanical.strength_bonus || 0;
                 preview.stamina_bonus += botanical.stamina_bonus || 0;
                 preview.endurance_bonus += botanical.endurance_bonus || 0;
@@ -104,25 +93,21 @@
                 preview.toughness_bonus += botanical.toughness_bonus || 0;
                 preview.armor_flat_bonus += botanical.armor_flat_bonus || 0;
 
-                // Sum up percentage bonuses
                 preview.strength_percent_bonus += botanical.strength_percent_bonus || 0.0;
                 preview.agility_percent_bonus += botanical.agility_percent_bonus || 0.0;
                 preview.intelligence_percent_bonus += botanical.intelligence_percent_bonus || 0.0;
 
-                // Add active effects to the temporary Set
                 if (botanical.active_effect_text) {
                     uniqueEffects.add(botanical.active_effect_text);
                 }
             }
         });
 
-        // Convert the temporary Set of effects to a comma-separated string for display
         preview.active_effects = Array.from(uniqueEffects).join(', ');
 
         return preview;
     }
 
-    // Call fetchBotanicals when the component is first mounted
     onMount(() => {
         fetchBotanicals();
     });
@@ -131,7 +116,6 @@
 <div class="p-6 max-w-8xl mx-auto bg-gray-900 text-white rounded-xl shadow-lg mt-10 mb-20">
     <h1 class="text-3xl font-bold mb-6 text-center text-teal-300">Elixir Crafting Station</h1>
 
-    <!-- Crafting Slots Section -->
     <div class="mb-8 p-6 bg-gray-800 rounded-lg shadow-md border border-gray-700">
         <h2 class="text-2xl font-semibold mb-4 text-teal-300 text-center">Crafting Slots ({elixirPreview.total_ingredients}/6)</h2>
         <div class="flex flex-wrap justify-center gap-4">
@@ -165,7 +149,6 @@
         </div>
     </div>
 
-    <!-- Elixir Preview Section -->
     <div class="mb-8 p-6 bg-gray-800 rounded-lg shadow-md border border-gray-700">
         <h2 class="text-2xl font-semibold mb-4 text-teal-300">Elixir Preview</h2>
         {#if elixirPreview.total_ingredients === 0}
@@ -199,7 +182,6 @@
         {/if}
     </div>
 
-    <!-- Available Botanicals Section -->
     <div class="p-6 bg-gray-800 rounded-lg shadow-md border border-gray-700">
         <h2 class="text-2xl font-semibold mb-4 text-teal-300">Available Botanicals</h2>
         {#if loading}
@@ -223,7 +205,6 @@
                         <div class="mt-2 text-gray-300 text-sm">
                             {#if item.rarity}<p><span class="font-medium">Rarity:</span> {item.rarity}</p>{/if}
                             {#if item.type}<p><span class="font-medium">Type:</span> {item.type}</p>{/if}
-                            <!-- Display relevant bonuses here -->
                             {#if item.strength_bonus > 0}<p>Str: +{item.strength_bonus}</p>{/if}
                             {#if item.agility_bonus > 0}<p>Agi: +{item.agility_bonus}</p>{/if}
                             {#if item.intelligence_bonus > 0}<p>Int: +{item.intelligence_bonus}</p>{/if}
@@ -231,7 +212,6 @@
                             {#if item.agility_percent_bonus > 0}<p>Agi %: +{item.agility_percent_bonus}%</p>{/if}
                             {#if item.intelligence_percent_bonus > 0}<p>Int %: +{item.intelligence_percent_bonus}%</p>{/if}
                             {#if item.armor_flat_bonus > 0}<p>Armor: +{item.armor_flat_bonus}</p>{/if}
-                            <!-- Add more stat displays as needed -->
                         </div>
                         <button
                             on:click={() => addBotanicalToSlot(item)}

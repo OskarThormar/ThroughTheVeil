@@ -1,5 +1,4 @@
 <script>
-    // No specific script logic needed for this display-only page
 </script>
 
 <div class="p-6 max-w-5xl mx-auto bg-gray-900 text-white rounded-xl shadow-lg mt-10">
@@ -10,7 +9,6 @@
     </p>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <!-- Armor Box -->
         <div class="item-mechanics-card">
             <h2 class="text-2xl font-semibold text-blue-300 mb-3 text-center">Armor</h2>
             <p class="text-gray-300">
@@ -23,7 +21,6 @@
             </p>
         </div>
 
-        <!-- Weapons Box -->
         <div class="item-mechanics-card">
             <h2 class="text-2xl font-semibold text-red-300 mb-3 text-center">Weapons</h2>
             <p class="text-gray-300">
@@ -38,7 +35,6 @@
             </p>
         </div>
 
-        <!-- Shields Box -->
         <div class="item-mechanics-card">
             <h2 class="text-2xl font-semibold text-green-300 mb-3 text-center">Shields</h2>
             <p class="text-gray-300">
@@ -53,7 +49,6 @@
             </p>
         </div>
 
-        <!-- Jewellery Box -->
         <div class="item-mechanics-card">
             <h2 class="text-2xl font-semibold text-purple-300 mb-3 text-center">Jewellery</h2>
             <p class="text-gray-300">
@@ -64,7 +59,6 @@
             </p>
         </div>
 
-        <!-- Backpacks Box -->
         <div class="item-mechanics-card">
             <h2 class="text-2xl font-semibold text-yellow-300 mb-3 text-center">Backpacks</h2>
             <p class="text-gray-300">
@@ -75,7 +69,6 @@
             </p>
         </div>
 
-        <!-- Storage Rings Box -->
         <div class="item-mechanics-card">
             <h2 class="text-2xl font-semibold text-indigo-300 mb-3 text-center">Storage Rings</h2>
             <p class="text-gray-300">
@@ -87,11 +80,11 @@
 
 <style>
     .item-mechanics-card {
-        background-color: #1f2937; /* A slightly lighter dark gray */
+        background-color: #1f2937;
         padding: 1.75rem;
         border-radius: 0.75rem;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-        border: 1px solid #374151; /* Subtle border */
+        border: 1px solid #374151; 
         transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
 

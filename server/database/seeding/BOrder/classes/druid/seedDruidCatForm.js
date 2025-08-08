@@ -1,9 +1,5 @@
 import db from '../../../../connection.js';
 
-/**
- * Seeds all Cat Form abilities and their related effects for the Druid class.
- * This function is self-contained and retrieves the Druid ID from the database.
- */
 export default async function seedDruidCatForm() {
     try {
         console.log("Seeding Druid Cat Form abilities with final schema...");
